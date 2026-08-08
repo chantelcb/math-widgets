@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Lessons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf9f5; --grid:#e4e7ea; --ink:#1c2b3a; --navy:#20314a; --amber:#c8792a; --line:#c9cfd6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/100% 32px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/32px 100%,
+      var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    line-height:1.6;
+  }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 24px 120px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--amber); margin:0 0 10px;
+  }
+  h1{
+    font-family:'Source Serif 4', serif; font-weight:700; font-size:clamp(32px,5vw,46px);
+    line-height:1.1; margin:0 0 8px; color:var(--navy);
+  }
+  .sub{ color:#5a6b7a; font-size:17px; margin:0 0 40px; max-width:54ch; }
+  h2{
+    font-family:'Source Serif 4', serif; font-size:22px; color:var(--navy);
+    margin:44px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--grid);
+  }
+  ul{ list-style:none; margin:0; padding:0; }
+  li{ border-bottom:1px solid var(--grid); }
+  li:first-child{ border-top:1px solid var(--grid); }
+  a.lesson{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+    padding:16px 4px; text-decoration:none; color:var(--ink); font-size:16px; font-weight:500;
+  }
+  a.lesson:hover{ color:var(--amber); }
+  a.lesson .num{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:#8b98a5; flex-shrink:0;
+  }
+  .empty{
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:#8b98a5;
+    padding:16px 4px; border:1px dashed var(--line); border-radius:4px; margin-top:8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Course Library</p>
+  <h1>Math Lessons</h1>
+  <p class="sub">Interactive lessons for the course. Pick a topic below to get started.</p>
+
+  <h2>Integers</h2>
+  <ul>
+    <li>
+      <a class="lesson" href="lessons/vector-addition.html">
+        <span>Lesson 10 &middot; Adding Vectors</span>
+        <span class="num">10</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="empty">More units and lessons get added here as they're converted &mdash; each new file just needs a matching &lt;li&gt; entry above.</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adding Vectors — Lesson</title>
+<script src="https://cdn.jsdelivr.net/npm/konva@0.9.0/konva.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf9f5;
+    --grid:#e4e7ea;
+    --ink:#1c2b3a;
+    --navy:#20314a;
+    --amber:#c8792a;
+    --line:#c9cfd6;
+    --green:#3f7d5c;
+    --blue:#2e5f8a;
+    --red:#b5453a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/100% 32px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/32px 100%,
+      var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    line-height:1.65;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:56px 24px 120px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:clamp(32px,5vw,46px);
+    line-height:1.1;
+    margin:0 0 8px;
+    color:var(--navy);
+  }
+  .sub{
+    color:#5a6b7a;
+    font-size:17px;
+    margin:0 0 40px;
+    max-width:54ch;
+  }
+  p{ font-size:17px; margin:0 0 20px; }
+  .figure{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:0 1px 0 var(--line);
+    margin:32px 0 40px;
+    overflow:hidden;
+  }
+  .figure-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#8b98a5;
+    padding:14px 20px 0;
+  }
+  #container{ width:100%; min-height:210px; }
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    padding:16px 20px 20px;
+    border-top:1px solid var(--grid);
+    margin-top:12px;
+  }
+  button{
+    font-family:'Public Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:9px 16px;
+    border-radius:3px;
+    border:1px solid var(--navy);
+    background:#fff;
+    color:var(--navy);
+    cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  button:hover{ background:var(--navy); color:#fff; }
+  button:focus-visible{ outline:3px solid var(--amber); outline-offset:2px; }
+  button#new-example{
+    background:var(--amber);
+    border-color:var(--amber);
+    color:#fff;
+    margin-left:auto;
+  }
+  button#new-example:hover{ background:#a8631e; border-color:#a8631e; }
+  .legend{
+    display:flex; gap:18px; flex-wrap:wrap;
+    padding:0 20px 18px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:#5a6b7a;
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .swatch{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+  .placeholder-fig{
+    background:repeating-linear-gradient(45deg,#fff,#fff 10px,#f2f0e9 10px,#f2f0e9 20px);
+    border:1px dashed var(--line);
+    border-radius:4px;
+    padding:22px 20px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:#8b98a5;
+    margin:24px 0 32px;
+  }
+  .note{
+    border-left:3px solid var(--amber);
+    background:#fff6ea;
+    padding:14px 18px;
+    font-size:15px;
+    margin:32px 0;
+    color:#5a4326;
+  }
+  footer{
+    margin-top:64px;
+    padding-top:20px;
+    border-top:1px solid var(--grid);
+    font-size:13px;
+    color:#8b98a5;
+    font-family:'JetBrains Mono', monospace;
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Integers &middot; Lesson 10</p>
+  <h1>Adding Vectors</h1>
+  <p class="sub">How direction and magnitude let us picture integer addition as movement.</p>
+
+  <p>In the previous section we talked about additive inverses by describing them in terms of discrete objects or quantities. Another useful way of thinking about integers is as vectors. Remember how our Hindu-Arabic numeral system gave us a way of expressing quantities by encoding information about sizes of groups according to place value position, and information about the number of groups of each size by the face value of the digit in the corresponding position?</p>
+
+  <p>In the context of measurement, the size of a number is called its <strong>magnitude</strong>, and describes its distance away from 0. Integers convey all of the same information as natural numbers &mdash; the numeral indicates the magnitude, or size, of the number. In addition, vectors also convey information about <strong>direction</strong>, which is given by the sign of the number (either positive (+) or negative (&minus;)). We can represent vectors geometrically with an arrow, where the length of the arrow corresponds to the magnitude of a number and the direction of the arrow is given by the sign of the number.</p>
+
+  <div class="figure">
+    <p class="figure-label">Figure &mdash; interactive</p>
+    <div id="container"></div>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--green)"></i>augend</span>
+      <span><i class="swatch" style="background:var(--blue)"></i>addend</span>
+      <span><i class="swatch" style="background:var(--red)"></i>sum</span>
+    </div>
+    <div class="controls">
+      <button id="Reset">Reset</button>
+      <button id="Step 1">Step 1</button>
+      <button id="Step 2">Step 2</button>
+      <button id="Step 3">Step 3</button>
+      <button id="new-example">New Example</button>
+    </div>
+  </div>
+
+  <p>Integers are useful for keeping track of quantities, but can also be used to give directions. For example, consider the following set of simple instructions: <em>take two steps right, then take 3 more steps right.</em> We could visualize this movement using a number line.</p>
+
+  <div class="placeholder-fig">[Figure: number line &mdash; right/left steps]<br>&mdash; drop a matching interactive here later &mdash;</div>
+
+  <p>If we let the direction &ldquo;right&rdquo; correspond to the positive sign and &ldquo;left&rdquo; correspond to the negative sign, we could give directions like this: <em>take 3 steps followed by &minus;2 steps.</em> This is the same as saying take 3 steps to the right, then two steps to the left.</p>
+
+  <div class="placeholder-fig">[Figure: nose-to-tail vector addition, 3 + (&minus;2)]</div>
+
+  <p>Notice that our ending position corresponds to the sum 3 + (&minus;2) = 1. Geometrically, we say that vectors add by positioning the vectors <strong>nose to tail</strong>. The final position of the head of the last arrow corresponds to the quantity represented by the sum.</p>
+
+  <p>We can extend this idea to two dimensions. Let's continue using positive numbers to correspond to the direction &ldquo;right&rdquo; and negative numbers to correspond to &ldquo;left&rdquo; in the horizontal direction. Let's also let positive numbers correspond to &ldquo;up&rdquo; (think North) and negative numbers correspond to &ldquo;down&rdquo; (think South) in the vertical direction. Then we can give directions like: <em>take 3 steps horizontally, followed by &minus;1 step vertically.</em></p>
+
+  <div class="placeholder-fig">[Figure: 2D movement, ordered pair (3, &minus;1)]</div>
+
+  <p>We could define a position in two dimensions by giving a horizontal and vertical coordinate &mdash; this is often done using the notation of an ordered pair like (3, &minus;1), where the first number represents movement in the horizontal direction and the second number represents movement in the vertical direction. Notice that we could take &minus;1 vertically and 3 steps horizontally and end up in the same place!</p>
+
+  <p>Being able to express simple directions like this using vectors actually gives you the building blocks for learning about computer programming. Have you ever wondered how your computer applications, or even your calculator, know how to do what they do? Someone had to program them by giving them directions telling your computer what to do with the information you put into it.</p>
+
+  <p>Calculators, for example, can deal with negative signs differently, depending on how they've been programmed. Some calculators require you to enter a number before you can put a negative sign in front of it. Others let you enter the negative sign first. You might also notice that your calculator differentiates between a negative sign and subtraction &mdash; try entering the subtraction symbol, then 5, then &ldquo;=&rdquo;. Depending on your calculator, it might treat this as subtracting 5 from 0, giving &minus;5, or it might display an error, telling you it doesn't know how to handle the instruction.</p>
+
+  <div class="note">
+    <strong>Try it yourself:</strong> play around with your calculator and see what kind of instructions you can give it. A word of caution &mdash; on scientific calculators, random keystrokes can switch on modes that are hard to turn off. Stick to combinations you're familiar with, and keep exploring for times when you won't need your calculator for something important, like an exam.
+  </div>
+
+  <footer>Lesson 10 &middot; Addition &ndash; Vectors</footer>
+</div>
+
+<script>
+(function(){
+  var COLORS = { augend: '#3f7d5c', addend: '#2e5f8a', sum: '#b5453a', axis: '#c9cfd6', tick: '#8b98a5' };
+  var MAX_PPU = 54;      // pixels per unit, capped so small numbers don't stretch huge on wide screens
+  var MARGIN = 26;       // left/right breathing room so arrowheads/labels never clip
+
+  var containerEl = document.getElementById('container');
+  var stage = new Konva.Stage({ container: 'container', width: containerEl.clientWidth || 320, height: 220 });
+  var layer = new Konva.Layer();
+  stage.add(layer);
+
+  var augendUnits = 5, addendUnits = 8, currentStep = 0;
+  var augendArrow, addendArrow, sumArrow, augendLabel, addendLabel, sumLabel, axisGroup;
+
+  function centerText(node, cx, cy){
+    node.offsetX(node.width() / 2);
+    node.offsetY(node.height() / 2);
+    node.x(cx); node.y(cy);
+  }
+
+  function makeLabel(color, small){
+    return new Konva.Text({
+      text: '', fontStyle: '700', fontFamily: "'Public Sans', sans-serif",
+      fontSize: small ? 15 : 20, fill: color, opacity: 0
+    });
+  }
+
+  function makeArrow(color, small){
+    return new Konva.Arrow({
+      points: [0,0,0,0], fill: color, stroke: color, opacity: 0,
+      pointerLength: small ? 10 : 14, pointerWidth: small ? 10 : 14, strokeWidth: small ? 3 : 4,
+      lineCap: 'round', lineJoin: 'round', shadowColor: '#000', shadowOpacity: 0.12,
+      shadowBlur: 4, shadowOffsetY: 2
+    });
+  }
+
+  augendArrow = makeArrow(COLORS.augend);
+  addendArrow = makeArrow(COLORS.addend);
+  sumArrow = makeArrow(COLORS.sum, true);
+  augendLabel = makeLabel(COLORS.augend);
+  addendLabel = makeLabel(COLORS.addend);
+  sumLabel = makeLabel(COLORS.sum);
+  axisGroup = new Konva.Group();
+
+  layer.add(axisGroup, sumArrow, augendArrow, addendArrow, sumLabel, augendLabel, addendLabel);
+
+  function layout(preserveStep){
+    var w = containerEl.clientWidth || 320;
+    var narrow = w < 480;
+    var h = narrow ? 210 : 250;
+    stage.width(w);
+    stage.height(h);
+
+    var sumUnits = augendUnits + addendUnits;
+    var usable = w - MARGIN * 2;
+    var ppu = Math.min(usable / sumUnits, MAX_PPU);
+    var drawWidth = sumUnits * ppu;
+    var startX = MARGIN + (usable - drawWidth) / 2;
+
+    var sumY = h * 0.2;
+    var baseY = h * 0.6;
+    var axisY = baseY + 26;
+
+    var augEndX = startX + augendUnits * ppu;
+    var sumEndX = startX + drawWidth;
+
+    augendArrow.points([startX, baseY, augEndX, baseY]);
+    addendArrow.points([augEndX, baseY, sumEndX, baseY]);
+    sumArrow.points([startX, sumY, sumEndX, sumY]);
+
+    var fontSize = narrow ? 15 : 20;
+    augendLabel.fontSize(fontSize); addendLabel.fontSize(fontSize); sumLabel.fontSize(fontSize);
+    augendLabel.text('+' + augendUnits);
+    addendLabel.text('+' + addendUnits);
+    sumLabel.text(String(sumUnits));
+    centerText(augendLabel, startX + (augEndX - startX) / 2, baseY + 22);
+    centerText(addendLabel, augEndX + (sumEndX - augEndX) / 2, baseY + 22);
+    centerText(sumLabel, startX + drawWidth / 2, sumY - 20);
+
+    // axis / number line
+    axisGroup.destroyChildren();
+    axisGroup.add(new Konva.Line({ points: [startX - 8, axisY, sumEndX + 8, axisY], stroke: COLORS.axis, strokeWidth: 2 }));
+    [0, augendUnits, sumUnits].forEach(function(u){
+      var x = startX + u * ppu;
+      axisGroup.add(new Konva.Line({ points: [x, axisY - 5, x, axisY + 5], stroke: COLORS.tick, strokeWidth: 2 }));
+      var t = new Konva.Text({ text: String(u), fontSize: 12, fontFamily: "'JetBrains Mono', monospace", fill: COLORS.tick });
+      centerText(t, x, axisY + 16);
+      axisGroup.add(t);
+    });
+
+    if (preserveStep) applyStep(currentStep, true);
+    layer.batchDraw();
+  }
+
+  function applyStep(step, instant){
+    currentStep = step;
+    var vals = { augend: step >= 1 ? 1 : 0, addend: step >= 2 ? 1 : 0, sum: step >= 3 ? 1 : 0 };
+    [[augendArrow, augendLabel, vals.augend], [addendArrow, addendLabel, vals.addend], [sumArrow, sumLabel, vals.sum]]
+      .forEach(function(pair){
+        var nodes = [pair[0], pair[1]], opacity = pair[2];
+        nodes.forEach(function(n){
+          if (instant) n.opacity(opacity);
+          else n.to({ opacity: opacity, duration: 0.3 });
+        });
+      });
+    layer.batchDraw();
+  }
+
+  document.getElementById('Reset').addEventListener('click', function(){ applyStep(0); });
+  document.getElementById('Step 1').addEventListener('click', function(){ applyStep(1); });
+  document.getElementById('Step 2').addEventListener('click', function(){ applyStep(2); });
+  document.getElementById('Step 3').addEventListener('click', function(){ applyStep(3); });
+
+  document.getElementById('new-example').addEventListener('click', function(){
+    augendUnits = Math.floor(Math.random() * 10) + 1;
+    addendUnits = Math.floor(Math.random() * 10) + 1;
+    layout(false);
+    applyStep(0, true);
+  });
+
+  layout(true);
+
+  // Redraw responsively on container/viewport size changes
+  var resizeTimer;
+  function onResize(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){ layout(true); }, 120);
+  }
+  if (window.ResizeObserver){
+    new ResizeObserver(onResize).observe(containerEl);
+  } else {
+    window.addEventListener('resize', onResize);
+  }
+})();
+</script>
+</body>
+</html>
